@@ -1,0 +1,181 @@
+{
+  "type" : "record",
+  "name" : "airbnb_houses",
+  "doc" : "Sqoop import of airbnb_houses",
+  "fields" : [ {
+    "name" : "id",
+    "type" : [ "null", "int" ],
+    "default" : null,
+    "columnName" : "id",
+    "sqlType" : "4"
+  }, {
+    "name" : "log_price",
+    "type" : [ "null", "string" ],
+    "default" : null,
+    "columnName" : "log_price",
+    "sqlType" : "2"
+  }, {
+    "name" : "property_type",
+    "type" : [ "null", "string" ],
+    "default" : null,
+    "columnName" : "property_type",
+    "sqlType" : "12"
+  }, {
+    "name" : "room_type",
+    "type" : [ "null", "string" ],
+    "default" : null,
+    "columnName" : "room_type",
+    "sqlType" : "12"
+  }, {
+    "name" : "amenities",
+    "type" : [ "null", "string" ],
+    "default" : null,
+    "columnName" : "amenities",
+    "sqlType" : "12"
+  }, {
+    "name" : "accommodates",
+    "type" : [ "null", "int" ],
+    "default" : null,
+    "columnName" : "accommodates",
+    "sqlType" : "4"
+  }, {
+    "name" : "bathrooms",
+    "type" : [ "null", "string" ],
+    "default" : null,
+    "columnName" : "bathrooms",
+    "sqlType" : "2"
+  }, {
+    "name" : "bed_type",
+    "type" : [ "null", "string" ],
+    "default" : null,
+    "columnName" : "bed_type",
+    "sqlType" : "12"
+  }, {
+    "name" : "cancellation_policy",
+    "type" : [ "null", "string" ],
+    "default" : null,
+    "columnName" : "cancellation_policy",
+    "sqlType" : "12"
+  }, {
+    "name" : "cleaning_fee",
+    "type" : [ "null", "boolean" ],
+    "default" : null,
+    "columnName" : "cleaning_fee",
+    "sqlType" : "-7"
+  }, {
+    "name" : "city",
+    "type" : [ "null", "string" ],
+    "default" : null,
+    "columnName" : "city",
+    "sqlType" : "12"
+  }, {
+    "name" : "description",
+    "type" : [ "null", "string" ],
+    "default" : null,
+    "columnName" : "description",
+    "sqlType" : "12"
+  }, {
+    "name" : "first_review",
+    "type" : [ "null", "long" ],
+    "default" : null,
+    "columnName" : "first_review",
+    "sqlType" : "91"
+  }, {
+    "name" : "host_has_profile_pic",
+    "type" : [ "null", "boolean" ],
+    "default" : null,
+    "columnName" : "host_has_profile_pic",
+    "sqlType" : "-7"
+  }, {
+    "name" : "host_identity_verified",
+    "type" : [ "null", "boolean" ],
+    "default" : null,
+    "columnName" : "host_identity_verified",
+    "sqlType" : "-7"
+  }, {
+    "name" : "host_response_rate",
+    "type" : [ "null", "string" ],
+    "default" : null,
+    "columnName" : "host_response_rate",
+    "sqlType" : "12"
+  }, {
+    "name" : "host_since",
+    "type" : [ "null", "long" ],
+    "default" : null,
+    "columnName" : "host_since",
+    "sqlType" : "91"
+  }, {
+    "name" : "instant_bookable",
+    "type" : [ "null", "boolean" ],
+    "default" : null,
+    "columnName" : "instant_bookable",
+    "sqlType" : "-7"
+  }, {
+    "name" : "last_review",
+    "type" : [ "null", "long" ],
+    "default" : null,
+    "columnName" : "last_review",
+    "sqlType" : "91"
+  }, {
+    "name" : "latitude",
+    "type" : [ "null", "string" ],
+    "default" : null,
+    "columnName" : "latitude",
+    "sqlType" : "2"
+  }, {
+    "name" : "longitude",
+    "type" : [ "null", "string" ],
+    "default" : null,
+    "columnName" : "longitude",
+    "sqlType" : "2"
+  }, {
+    "name" : "name",
+    "type" : [ "null", "string" ],
+    "default" : null,
+    "columnName" : "name",
+    "sqlType" : "12"
+  }, {
+    "name" : "neighbourhood",
+    "type" : [ "null", "string" ],
+    "default" : null,
+    "columnName" : "neighbourhood",
+    "sqlType" : "12"
+  }, {
+    "name" : "number_of_reviews",
+    "type" : [ "null", "int" ],
+    "default" : null,
+    "columnName" : "number_of_reviews",
+    "sqlType" : "4"
+  }, {
+    "name" : "review_scores_rating",
+    "type" : [ "null", "string" ],
+    "default" : null,
+    "columnName" : "review_scores_rating",
+    "sqlType" : "2"
+  }, {
+    "name" : "thumbnail_url",
+    "type" : [ "null", "string" ],
+    "default" : null,
+    "columnName" : "thumbnail_url",
+    "sqlType" : "12"
+  }, {
+    "name" : "zipcode",
+    "type" : [ "null", "string" ],
+    "default" : null,
+    "columnName" : "zipcode",
+    "sqlType" : "12"
+  }, {
+    "name" : "bedrooms",
+    "type" : [ "null", "string" ],
+    "default" : null,
+    "columnName" : "bedrooms",
+    "sqlType" : "2"
+  }, {
+    "name" : "beds",
+    "type" : [ "null", "string" ],
+    "default" : null,
+    "columnName" : "beds",
+    "sqlType" : "2"
+  } ],
+  "tableName" : "airbnb_houses"
+}
