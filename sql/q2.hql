@@ -2,6 +2,7 @@ USE team23_projectdb;
 
 SET hive.resultset.use.unique.column.names = false;
 
+DROP TABLE IF EXISTS q2_results;
 CREATE EXTERNAL TABLE q2_results (
   host_response_rate FLOAT, 
   review_scores_rating INT

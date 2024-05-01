@@ -1,0 +1,32 @@
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> USE team23_projectdb; 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> SET hive.resultset.use.unique.column.names = false;
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> DROP TABLE IF EXISTS q1_results;
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> CREATE EXTERNAL TABLE q1_results (
+. . . . . . . . . . . . . . . . . . . . . . .>   city VARCHAR(100), 
+. . . . . . . . . . . . . . . . . . . . . . .>   avg_price DOUBLE
+. . . . . . . . . . . . . . . . . . . . . . .> ) ROW FORMAT DELIMITED
+. . . . . . . . . . . . . . . . . . . . . . .> FIELDS TERMINATED BY ',' 
+. . . . . . . . . . . . . . . . . . . . . . .> LOCATION 'project/warehouse/q1';
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> INSERT INTO q1_results 
+. . . . . . . . . . . . . . . . . . . . . . .> SELECT city, AVG(EXP(log_price)) AS avg_price 
+. . . . . . . . . . . . . . . . . . . . . . .> FROM airbnb_part_buck
+. . . . . . . . . . . . . . . . . . . . . . .> GROUP BY city 
+. . . . . . . . . . . . . . . . . . . . . . .> ORDER BY avg_price DESC
+. . . . . . . . . . . . . . . . . . . . . . .> LIMIT 15; 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> SELECT * FROM q1_results; 
++----------+---------------------+
+|   city   |      avg_price      |
++----------+---------------------+
+| SF       | 227.3725520671433   |
+| DC       | 217.93336849507736  |
+| Boston   | 165.63148788927336  |
+| LA       | 155.38823319823632  |
+| NYC      | 143.02457572104237  |
+| Chicago  | 132.47647216993815  |
++----------+---------------------+
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 

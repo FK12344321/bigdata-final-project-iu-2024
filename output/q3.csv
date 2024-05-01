@@ -1,0 +1,42 @@
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> USE team23_projectdb; 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> SET hive.resultset.use.unique.column.names = false;
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> DROP TABLE IF EXISTS q3_results;
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> CREATE EXTERNAL TABLE q3_results (
+. . . . . . . . . . . . . . . . . . . . . . .>   property_type VARCHAR(100), 
+. . . . . . . . . . . . . . . . . . . . . . .>   avg_price DOUBLE
+. . . . . . . . . . . . . . . . . . . . . . .> ) ROW FORMAT DELIMITED
+. . . . . . . . . . . . . . . . . . . . . . .> FIELDS TERMINATED BY ',' 
+. . . . . . . . . . . . . . . . . . . . . . .> LOCATION 'project/warehouse/q3';
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> INSERT INTO q3_results 
+. . . . . . . . . . . . . . . . . . . . . . .> SELECT p.property_type, AVG(EXP(p.log_price)) AS avg_price
+. . . . . . . . . . . . . . . . . . . . . . .> FROM airbnb_part_buck p
+. . . . . . . . . . . . . . . . . . . . . . .> JOIN (
+. . . . . . . . . . . . . . . . . . . . . . .>     SELECT property_type, COUNT(*) AS popularity_count
+. . . . . . . . . . . . . . . . . . . . . . .>     FROM airbnb_part_buck
+. . . . . . . . . . . . . . . . . . . . . . .>     GROUP BY property_type
+. . . . . . . . . . . . . . . . . . . . . . .>     ORDER BY popularity_count DESC
+. . . . . . . . . . . . . . . . . . . . . . .>     LIMIT 10
+. . . . . . . . . . . . . . . . . . . . . . .> ) AS top_types ON p.property_type = top_types.property_type
+. . . . . . . . . . . . . . . . . . . . . . .> GROUP BY p.property_type
+. . . . . . . . . . . . . . . . . . . . . . .> ORDER BY avg_price DESC;
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> SELECT * FROM q3_results; 
++------------------+---------------------+
+|  property_type   |      avg_price      |
++------------------+---------------------+
+| Villa            | 383.68715083798884  |
+| Other            | 212.44810543657331  |
+| Condominium      | 204.64785553047403  |
+| Loft             | 203.91318327974275  |
+| House            | 188.3058567015929   |
+| Townhouse        | 182.35579196217495  |
+| Apartment        | 146.3684672366998   |
+| Bungalow         | 135.3879781420765   |
+| Guesthouse       | 125.2570281124498   |
+| Bed & Breakfast  | 116.58658008658008  |
++------------------+---------------------+
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 

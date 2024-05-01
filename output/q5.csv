@@ -1,0 +1,31 @@
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> USE team23_projectdb; 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> SET hive.resultset.use.unique.column.names = false;
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> DROP TABLE IF EXISTS q5_results;
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> CREATE EXTERNAL TABLE q5_results (
+. . . . . . . . . . . . . . . . . . . . . . .>   cancellation_policy VARCHAR(100), 
+. . . . . . . . . . . . . . . . . . . . . . .>   count INT,
+. . . . . . . . . . . . . . . . . . . . . . .>   avg_number_of_reviews DOUBLE,
+. . . . . . . . . . . . . . . . . . . . . . .>   avg_price DOUBLE
+. . . . . . . . . . . . . . . . . . . . . . .> ) ROW FORMAT DELIMITED
+. . . . . . . . . . . . . . . . . . . . . . .> FIELDS TERMINATED BY ',' 
+. . . . . . . . . . . . . . . . . . . . . . .> LOCATION 'project/warehouse/q5';
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> INSERT INTO q5_results 
+. . . . . . . . . . . . . . . . . . . . . . .> SELECT cancellation_policy, COUNT(*) as count, AVG(number_of_reviews) as  avg_number_of_reviews, AVG(EXP(log_price)) as avg_price
+. . . . . . . . . . . . . . . . . . . . . . .> FROM airbnb_part_buck
+. . . . . . . . . . . . . . . . . . . . . . .> GROUP BY cancellation_policy;
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> SELECT * FROM q5_results; 
++----------------------+--------+------------------------+---------------------+
+| cancellation_policy  | count  | avg_number_of_reviews  |      avg_price      |
++----------------------+--------+------------------------+---------------------+
+| moderate             | 19063  | 26.056759166972668     | 141.45370613229818  |
+| super_strict_30      | 112    | 9.357142857142858      | 264.2053571428572   |
+| flexible             | 22545  | 8.50348192503881       | 150.26533599467732  |
+| super_strict_60      | 17     | 3.764705882352941      | 929.1764705882349   |
+| strict               | 32374  | 26.546580589361835     | 177.78442577376907  |
++----------------------+--------+------------------------+---------------------+
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 

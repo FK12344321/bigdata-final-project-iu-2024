@@ -1,0 +1,51 @@
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> USE team23_projectdb; 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> SET hive.resultset.use.unique.column.names = false;
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> DROP TABLE IF EXISTS q2_results;
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> CREATE EXTERNAL TABLE q2_results (
+. . . . . . . . . . . . . . . . . . . . . . .>   host_response_rate FLOAT, 
+. . . . . . . . . . . . . . . . . . . . . . .>   review_scores_rating INT
+. . . . . . . . . . . . . . . . . . . . . . .> ) ROW FORMAT DELIMITED
+. . . . . . . . . . . . . . . . . . . . . . .> FIELDS TERMINATED BY ',' 
+. . . . . . . . . . . . . . . . . . . . . . .> LOCATION 'project/warehouse/q2';
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> INSERT INTO q2_results 
+. . . . . . . . . . . . . . . . . . . . . . .> SELECT AVG(host_response_rate) AS host_response_rate, CAST((review_scores _rating) AS INT) AS review_scores_rating
+. . . . . . . . . . . . . . . . . . . . . . .> FROM airbnb_part_buck
+. . . . . . . . . . . . . . . . . . . . . . .> WHERE host_response_rate IS NOT NULL AND review_scores_rating IS NOT NULL 
+. . . . . . . . . . . . . . . . . . . . . . .> GROUP BY review_scores_rating 
+. . . . . . . . . . . . . . . . . . . . . . .> HAVING COUNT(host_response_rate) > 100
+. . . . . . . . . . . . . . . . . . . . . . .> ORDER BY review_scores_rating;
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> SELECT * FROM q2_results; 
++---------------------+-----------------------+
+| host_response_rate  | review_scores_rating  |
++---------------------+-----------------------+
+| 88.24419            | 60                    |
+| 88.55               | 70                    |
+| 92.041664           | 73                    |
+| 91.85409            | 80                    |
+| 95.7541             | 81                    |
+| 94.51579            | 82                    |
+| 93.621086           | 83                    |
+| 94.78851            | 84                    |
+| 94.47585            | 85                    |
+| 94.83188            | 86                    |
+| 93.99569            | 87                    |
+| 95.27655            | 88                    |
+| 95.1185             | 89                    |
+| 93.54441            | 90                    |
+| 95.55593            | 91                    |
+| 96.11739            | 92                    |
+| 95.27612            | 93                    |
+| 96.11024            | 94                    |
+| 96.225945           | 95                    |
+| 96.8302             | 96                    |
+| 96.96194            | 97                    |
+| 97.777016           | 98                    |
+| 98.44162            | 99                    |
+| 94.792984           | 100                   |
++---------------------+-----------------------+
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
+0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 

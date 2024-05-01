@@ -2,6 +2,7 @@ USE team23_projectdb;
 
 SET hive.resultset.use.unique.column.names = false;
 
+DROP TABLE IF EXISTS q1_results;
 CREATE EXTERNAL TABLE q1_results (
   city VARCHAR(100), 
   avg_price DOUBLE
