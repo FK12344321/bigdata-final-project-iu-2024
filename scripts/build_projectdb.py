@@ -15,7 +15,7 @@ ENC = "utf-8"
 
 
 # Read password from secrets file
-file = os.path.join("..", "secrets", ".psql.pass")
+file = os.path.join("/home/team23/project/bigdata-final-project-iu-2024", "secrets", ".psql.pass")
 with open(file, "r", encoding=ENC) as file:
     PASSWORD = file.read().rstrip()
 
@@ -23,6 +23,7 @@ HOST = "hadoop-04.uni.innopolis.ru"
 
 # build connection string
 CONN_STRING = f"host={HOST} port=5432 user=team23 dbname=team23_projectdb password={PASSWORD}"
+PATH = "/home/team23/project/bigdata-final-project-iu-2024"
 
 
 # Connect to the remote dbms
@@ -30,15 +31,15 @@ with psql.connect(CONN_STRING) as conn:
     # Create a cursor for executing psql commands
     cur = conn.cursor()
     # Read the commands from the file and execute them.
-    with open(os.path.join("..", "sql", "create_tables.sql"), encoding=ENC) as file:
+    with open(os.path.join(PATH, "sql", "create_tables.sql"), encoding=ENC) as file:
         content = file.read()
         cur.execute(content)
     conn.commit()
 
     # Read the commands from the file and execute them.
-    with open(os.path.join("..", "sql", "import_data.sql"), encoding=ENC) as file:
+    with open(os.path.join(PATH, "sql", "import_data.sql"), encoding=ENC) as file:
         commands = file.readlines()
-        with open(os.path.join("..", "data", "airbnb_preprocessed.csv"), "r", encoding=ENC) as dept:
+        with open(os.path.join(PATH, "data", "airbnb_preprocessed.csv"), "r", encoding=ENC) as dept:
             cur.copy_expert(" ".join(commands), dept)
 
     # If the sql statements are CRUD then you need to commit the change
@@ -47,7 +48,7 @@ with psql.connect(CONN_STRING) as conn:
     pprint(conn)
     cur = conn.cursor()
     # Read the sql commands from the file
-    with open(os.path.join("..", "sql", "test_database.sql"), encoding=ENC) as file:
+    with open(os.path.join(PATH, "sql", "test_database.sql"), encoding=ENC) as file:
         commands = file.readlines()
         for command in commands:
             cur.execute(command)

@@ -1,3 +1,7 @@
+'''
+This module is the entire implementation of Stage 3
+'''
+
 import math
 import os
 import numpy as np
@@ -75,26 +79,38 @@ for c in numericalCols:
     df2 = df2.withColumn(c, df2[c].cast('float'))
 
 
-# Custom transformer for date features in YYYY-MM-DD format
+DAY_PERIOD = 31
+MONTH_PERIOD = 12
+
+
 class YMDTransformer(Transformer, HasInputCol, HasOutputCol,
                      DefaultParamsReadable, DefaultParamsWritable):
+    '''
+    Custom transformer for date features in YYYY-MM-DD format
+    '''
+
     @keyword_only
     def __init__(self, inputCol: str = "input", outputCol: str = "output"):
         super().__init__()
-        kwargs = self._input_kwargs
-        self.set_params(**kwargs)
+        self._setDefault(inputCol=inputCol, outputCol=outputCol)
+        self.set_params(input_col=inputCol, output_col=outputCol)
 
     @keyword_only
-    def set_params(self, inputCol: str = "input", outputCol: str = "output"):
-        kwargs = self._input_kwargs
-        self._set(**kwargs)
+    def set_params(self, input_col: str = "input", output_col: str = "output"):
+        '''
+        Parameters:
+        input_col (str): The name to assign to the input column.
+        output_col (str): The name to assign to the output column.
+
+        Returns:
+        object: The instance of the class with updated column names.
+        '''
+
+        return self._set(inputCol=input_col, outputCol=output_col)
 
     def _transform(self, dataset: DataFrame):
         input_col = self.getInputCol()
         output_col = self.getOutputCol()
-
-        DAY_PERIOD = 31
-        MONTH_PERIOD = 12
 
         # split the data and cast to float
         input_col = F.split(dataset[input_col], '-').cast("array<float>")
@@ -108,48 +124,59 @@ class YMDTransformer(Transformer, HasInputCol, HasOutputCol,
         m_cos = F.cos(2 * math.pi * F.element_at(input_col, 2) / MONTH_PERIOD)
 
         # year remains as is
-        y = F.element_at(input_col, 1)
+        year = F.element_at(input_col, 1)
 
         # pack everything into a vector for VectorAssembler
-        atov = F.udf(lambda l: Vectors.dense(l), VectorUDT())
-        res = F.array(d_sin, d_cos, m_sin, m_cos, y)
+        atov = F.udf(Vectors.dense, VectorUDT())
+        res = F.array(d_sin, d_cos, m_sin, m_cos, year)
         res = atov(res)
 
         return dataset.withColumn(output_col, res)
 
 
-# Custom transformer for geospartial features
 class ECEFTransformer(Transformer, HasInputCols, HasOutputCol,
                       DefaultParamsReadable, DefaultParamsWritable):
+    '''
+    Custom transformer for geospartial features
+    '''
+
     @keyword_only
     def __init__(self, inputCols: str = "input", outputCol: str = "output"):
         super().__init__()
-        kwargs = self._input_kwargs
-        self.set_params(**kwargs)
+        self._setDefault(inputCols=inputCols, outputCol=outputCol)
+        self.set_params(input_cols=inputCols, output_col=outputCol)
 
     @keyword_only
-    def set_params(self, inputCols: str = "input", outputCol: str = "output"):
-        kwargs = self._input_kwargs
-        self._set(**kwargs)
+    def set_params(self, input_cols: str = "input", output_col: str = "output"):
+        '''
+        Parameters:
+        input_col (str): The name to assign to the input column.
+        output_col (str): The name to assign to the output column.
+
+        Returns:
+        object: The instance of the class with updated column names.
+        '''
+
+        return self._set(inputCols=input_cols, outputCol=output_col)
 
     def _transform(self, dataset: DataFrame):
         input_cols = self.getInputCols()
         output_col = self.getOutputCol()
 
-        a = 6378137.0               # WGS-84 semi-major axis
-        e2 = 6.6943799901377997e-3  # WGS-84 first eccentricity squared
+        semi_major_axis = 6378137.0               # WGS-84 semi-major axis
+        eccentr_squared = 6.6943799901377997e-3  # WGS-84 first eccentricity squared
 
         lat = dataset[input_cols[0]]
         lon = dataset[input_cols[1]]
 
-        n = a / F.sqrt(1 - e2 * F.sin(lat) * F.sin(lat))
-        x = n * F.cos(lat) * F.cos(lon)    # ECEF x
-        y = n * F.cos(lat) * F.sin(lon)    # ECEF y
-        z = (n * (1 - e2)) * F.sin(lat)    # ECEF z
+        radial_distance = semi_major_axis / F.sqrt(1 - eccentr_squared * F.sin(lat) * F.sin(lat))
+        ecef_x = radial_distance * F.cos(lat) * F.cos(lon)    # ECEF x
+        ecef_y = radial_distance * F.cos(lat) * F.sin(lon)    # ECEF y
+        ecef_z = (radial_distance * (1 - eccentr_squared)) * F.sin(lat)    # ECEF z
 
         # pack everything into a vector for VectorAssembler
         atov = F.udf(Vectors.dense, VectorUDT())
-        res = F.array(x, y, z)
+        res = F.array(ecef_x, ecef_y, ecef_z)
         res = atov(res)
 
         return dataset.withColumn(output_col, res)
@@ -221,6 +248,16 @@ transformed = transformed.withColumnRenamed('components', 'features')
 
 # replaced coalesce(1) with repartition(1) to fix OoM issue
 def run(command):
+    '''
+    Execute a shell command and return its output.
+
+    Parameters:
+    command (str): The shell command to be executed.
+
+    Returns:
+    str: The output from the shell command as a string.
+    '''
+
     return os.popen(command).read()
 
 

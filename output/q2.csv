@@ -11,9 +11,9 @@
 . . . . . . . . . . . . . . . . . . . . . . .> LOCATION 'project/warehouse/q2';
 0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
 0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> INSERT INTO q2_results 
-. . . . . . . . . . . . . . . . . . . . . . .> SELECT AVG(host_response_rate) AS host_response_rate, CAST((review_scores _rating) AS INT) AS review_scores_rating
+. . . . . . . . . . . . . . . . . . . . . . .> SELECT AVG(host_response_rate) AS host_response_rate, CAST((review_scores_rating) AS INT) AS review_scores_rating
 . . . . . . . . . . . . . . . . . . . . . . .> FROM airbnb_part_buck
-. . . . . . . . . . . . . . . . . . . . . . .> WHERE host_response_rate IS NOT NULL AND review_scores_rating IS NOT NULL 
+. . . . . . . . . . . . . . . . . . . . . . .> WHERE host_response_rate IS NOT NULL AND review_scores_rating IS NOT NULL
 . . . . . . . . . . . . . . . . . . . . . . .> GROUP BY review_scores_rating 
 . . . . . . . . . . . . . . . . . . . . . . .> HAVING COUNT(host_response_rate) > 100
 . . . . . . . . . . . . . . . . . . . . . . .> ORDER BY review_scores_rating;

@@ -13,7 +13,7 @@
 . . . . . . . . . . . . . . . . . . . . . . .> LOCATION 'project/warehouse/q5';
 0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
 0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> INSERT INTO q5_results 
-. . . . . . . . . . . . . . . . . . . . . . .> SELECT cancellation_policy, COUNT(*) as count, AVG(number_of_reviews) as  avg_number_of_reviews, AVG(EXP(log_price)) as avg_price
+. . . . . . . . . . . . . . . . . . . . . . .> SELECT cancellation_policy, COUNT(*) as count, AVG(number_of_reviews) as avg_number_of_reviews, AVG(EXP(log_price)) as avg_price
 . . . . . . . . . . . . . . . . . . . . . . .> FROM airbnb_part_buck
 . . . . . . . . . . . . . . . . . . . . . . .> GROUP BY cancellation_policy;
 0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 

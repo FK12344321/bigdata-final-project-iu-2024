@@ -13,7 +13,7 @@
 0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
 0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> INSERT INTO q4_results 
 . . . . . . . . . . . . . . . . . . . . . . .> 
-. . . . . . . . . . . . . . . . . . . . . . .> SELECT host_identity_verified, COUNT(*) as count, AVG(number_of_reviews)  as avg_number_of_reviews
+. . . . . . . . . . . . . . . . . . . . . . .> SELECT host_identity_verified, COUNT(*) as count, AVG(number_of_reviews) as avg_number_of_reviews
 . . . . . . . . . . . . . . . . . . . . . . .> FROM airbnb_part_buck
 . . . . . . . . . . . . . . . . . . . . . . .> GROUP BY host_identity_verified;
 0: jdbc:hive2://hadoop-03.uni.innopolis.ru:10> 
